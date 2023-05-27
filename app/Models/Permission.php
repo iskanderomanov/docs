@@ -15,10 +15,16 @@ class Permission extends BaseModel
      *  Название доступа
      */
     public const NAME_COLUMN = 'name';
-    protected $fillable = [self::NAME_COLUMN ];
+
+    /**
+     *  Название 'разрешение роли'
+     */
+    public const ROLE_PERMISSION_COLUMN = 'role_permission';
+
+    protected $fillable = [self::NAME_COLUMN];
 
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(Role::class, 'role_permission');
+        return $this->belongsToMany(Role::class, self::ROLE_PERMISSION_COLUMN);
     }
 }

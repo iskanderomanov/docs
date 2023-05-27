@@ -5,32 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Role extends BaseModel
+class Position extends BaseModel
 {
     use HasFactory;
 
     /**
      * Здесь описываются название колонок в таблице
-     *  'Название роли'
+     *  Название доступа
      */
     public const NAME_COLUMN = 'name';
 
     /**
      *  Название 'разрешение роли'
      */
-    public const ROLE_PERMISSION_COLUMN = 'role_permission';
+    public const POSITION_ID_COLUMN = 'position_id';
 
     protected $fillable = [self::NAME_COLUMN];
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(User::class);
-    }
-
-    public function permissions(): BelongsToMany
-    {
-        return $this->belongsToMany(Permission::class, self::ROLE_PERMISSION_COLUMN);
+        return $this->belongsToMany(User::class, self::POSITION_ID_COLUMN);
     }
 }
