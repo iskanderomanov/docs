@@ -21,8 +21,14 @@ class Permission extends BaseModel
      */
     public const ROLE_PERMISSION_COLUMN = 'role_permission';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [self::NAME_COLUMN];
 
+    /**
+     * @return BelongsToMany
+     */
     public function roles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, self::ROLE_PERMISSION_COLUMN);

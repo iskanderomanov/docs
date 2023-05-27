@@ -79,11 +79,17 @@ class User extends Authenticatable
         self::PASSWORD_COLUMN
     ];
 
+    /**
+     * @return BelongsTo
+     */
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);
     }
 
+    /**
+     * @return HasOne
+     */
     public function position(): HasOne
     {
         return $this->hasOne(Position::class, self::POSITION_ID_COLUMN);

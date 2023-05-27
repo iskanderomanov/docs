@@ -21,8 +21,14 @@ class Position extends BaseModel
      */
     public const POSITION_ID_COLUMN = 'position_id';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [self::NAME_COLUMN];
 
+    /**
+     * @return BelongsToMany
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, self::POSITION_ID_COLUMN);
