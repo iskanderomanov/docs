@@ -1,18 +1,23 @@
 <?php
 
+use App\Http\Controllers\Web\Accounting\AccountingController;
+use App\Http\Controllers\Web\HR\HRController;
+use App\Http\Controllers\Web\Tabel\TabelController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
-Route::get('/', function () {
-    return view('welcome');
+// Маршрут для "Табельщика"
+Route::middleware('check.admin.access:Tabel')->group(function () {
+    Route::get('/tabel', [TabelController::class, 'index'])->name('admin.tabel');
 });
+
+// Маршрут для "Отдела кадров"
+Route::middleware('check.admin.access:HR')->group(function () {
+    Route::get('/hr', [HRController::class, 'index'])->name('admin.hr');
+});
+
+// Маршрут для "Бухгалтерии"
+Route::middleware('check.admin.access:Accounting')->group(function () {
+    Route::get('/accounting', [AccountingController::class, 'index'])->name('admin.accounting');
+});
+

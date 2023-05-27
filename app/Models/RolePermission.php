@@ -4,10 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class RolePermission extends BaseModel
+class RolePermission extends Pivot
 {
-    use HasFactory;
+    /**
+     * Здесь описываются название промежуточной таблицы
+     *
+     */
+    public const TABLE_NAME = 'role_permission';
 
+    protected $table = self::TABLE_NAME;
 
 }
