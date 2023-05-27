@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Services\Admin;
+namespace App\Services\Hr;
 
-use App\Http\Dto\Admin\BaseCreateAdminDto;
-use App\Http\Dto\Admin\GetAdminDto;
+use App\Http\Dto\Hr\BaseCreateHrDto;
+use App\Http\Dto\Hr\GetHrDto;
 use App\Models\User;
 use App\Repositories\Admin\AdminRepositoryFactory;
 use App\Repositories\Admin\Interfaces\AdminRepositoryInterface;
-use App\Services\Admin\Interfaces\AdminServiceInterface;
+use App\Services\Hr\Interfaces\HrServiceInterface;
 use App\Services\Service;
 use App\Services\ServiceResponse;
 use Exception;
 
-class AdminService extends Service implements AdminServiceInterface
+class HrService extends Service implements HrServiceInterface
 {
     private AdminRepositoryInterface $repository;
 
@@ -25,12 +25,12 @@ class AdminService extends Service implements AdminServiceInterface
     }
 
     /**
-     * @param BaseCreateAdminDto $dto
+     * @param BaseCreateHrDto $dto
      * @return ServiceResponse
      */
-    public function createAdmin(BaseCreateAdminDto $dto): ServiceResponse
+    public function createAdmin(BaseCreateHrDto $dto): ServiceResponse
     {
-        $user = $this->repository->getByEmail(new GetAdminDto($dto->toArray()));
+        $user = $this->repository->getByEmail(new GetHrDto($dto->toArray()));
 
         if(!is_null($user)){
             return $this->createResponse(false);

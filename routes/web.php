@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\Web\Admin\AdminBaseController;
-use App\Http\Controllers\Web\Admin\RoleController;
+use App\Http\Controllers\Web\Hr\HrBaseController;
+use App\Http\Controllers\Web\Hr\RoleController;
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\TimeKeeper\TimeKeeperBaseController;
 use App\Utils\MiddlewareConstants;
 use App\Utils\RouteConstants;
 use Illuminate\Support\Facades\Route;
@@ -14,20 +15,26 @@ Route::group([
     RouteConstants::ROUTE_PREFIX => RouteConstants::ROUTE_PREFIX_AUTH
 ], function () {
     Route::get('/login', [AuthController::class, 'getLoginPage'])->name('auth.get_login');
+    Route::get('/post', [AuthController::class, 'postLogin'])->name('auth.post_login');
 });
 
 /**
- * Маршрутизатор для админа
+ * Маршрутизатор для отдел кадров
  */
-Route::middleware(MiddlewareConstants::ADMIN_MIDDLEWARE)->group(function () {
-    /**
-     * Маршрутизатор для ролей
-     */
-    Route::group([RouteConstants::ROUTE_PREFIX => RouteConstants::ROUTE_PREFIX_ROLES], function () {
-        Route::get('/', [RoleController::class, 'index'])->name('');
-        Route::get('/create', [RoleController::class, 'create'])->name('');
-    });
-
-    Route::get('/admin', [AdminBaseController::class])->name('');
+Route::middleware(MiddlewareConstants::HR_MIDDLEWARE)->group(function () {
+    Route::get('/hr', [HrBaseController::class])->name('admin');
 });
 
+/**
+ * Маршрутизатор для табельщика
+ */
+Route::middleware(MiddlewareConstants::HR_MIDDLEWARE)->group(function () {
+    Route::get('/time-keeper', [TimeKeeperBaseController::class])->name('admin');
+});
+
+/**
+ * Маршрутизатор для бухгалтера
+ */
+Route::middleware(MiddlewareConstants::HR_MIDDLEWARE)->group(function () {
+    Route::get('/accounting', [HrBaseController::class])->name('admin');
+});

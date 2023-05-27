@@ -3,7 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Dto\Admin\BaseCreateAdminDto;
+use App\Http\Dto\Hr\BaseCreateHrDto;
+use App\Http\Enums\UserTypes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,6 +16,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+    #todo админа в отдельный класс вынести.
 
     /**
      * Название колонки в таблице для хранения имени пользователя.
@@ -82,14 +84,6 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return BelongsTo
-     */
-    public function role(): BelongsTo
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    /**
      * @return HasOne
      */
     public function position(): HasOne
@@ -98,18 +92,40 @@ class User extends Authenticatable
     }
 
     /**
+     * Является ОК
+     *
      * @return bool
      */
-    public function isAdmin(): bool
+    public function isHr(): bool
     {
-        return $this->is_admin;
+        return $this->user_type === UserTypes::HR_TYPE;
     }
 
     /**
-     * @param BaseCreateAdminDto $dto
+     * Является бухгалтером
+     *
      * @return bool
      */
-    public static function createAdmin(BaseCreateAdminDto $dto): bool
+    public function isAccounting(): bool
+    {
+        return $this->user_type === UserTypes::ACCOUNTING_TYPE;
+    }
+
+    /**
+     * Является табельщиком
+     *
+     * @return bool
+     */
+    public function isTimeKeeper(): bool
+    {
+        return $this->user_type === UserTypes::TIME_KEEPER_TYPE;
+    }
+
+    /**
+     * @param BaseCreateHrDto $dto
+     * @return bool
+     */
+    public static function createAdmin(BaseCreateHrDto $dto): bool
     {
         return (new User($dto->toArray()))->save();
     }

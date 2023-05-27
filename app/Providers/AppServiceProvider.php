@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Services\Admin\AdminService;
-use App\Services\Admin\Interfaces\AdminServiceInterface;
+use App\Services\Hr\HrService;
+use App\Services\Hr\Interfaces\HrServiceInterface;
 use App\Services\Auth\AuthService;
 use App\Services\Auth\Interfaces\AuthServiceInterface;
 use Illuminate\Support\ServiceProvider;
@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind(AdminServiceInterface::class, AdminService::class);
+        $this->app->bind(HrServiceInterface::class, HrService::class);
         $this->app->bind(AuthServiceInterface::class,AuthService::class);
     }
 

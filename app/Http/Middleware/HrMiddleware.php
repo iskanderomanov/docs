@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class HrMiddleware
 {
     /**
      * Прокси для админа
@@ -22,7 +22,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): JsonResponse
     {
-        if (Auth::check() && Auth::user()->isAdmin()) {
+        if (Auth::check() && Auth::user()->isHr()) {
             return $next($request);
         }
 
