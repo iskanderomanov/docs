@@ -2,9 +2,9 @@
 
 namespace App\Repositories\Admin\Interfaces;
 
-use App\Http\Dto\Admin\BaseGetAdminDto;
+use App\Http\Dto\Hr\BaseGetHrDto;
 
 interface AdminRepositoryInterface
 {
-    public function getByEmail(BaseGetAdminDto $dto);
+    public function getByEmail(BaseGetHrDto $dto);
 }
