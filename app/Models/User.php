@@ -3,11 +3,13 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Dto\Admin\BaseCreateAdminDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -93,5 +95,31 @@ class User extends Authenticatable
     public function position(): HasOne
     {
         return $this->hasOne(Position::class, self::POSITION_ID_COLUMN);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
+    }
+
+    /**
+     * @param BaseCreateAdminDto $dto
+     * @return bool
+     */
+    public static function createAdmin(BaseCreateAdminDto $dto): bool
+    {
+        return (new User($dto->toArray()))->save();
+    }
+
+    /**
+     * @param string $value
+     * @return void
+     */
+    public function setPasswordAttribute(string $value): void
+    {
+        $this->attributes[self::PASSWORD_COLUMN] = Hash::make($value);
     }
 }

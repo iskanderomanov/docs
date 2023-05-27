@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Web\ReportCard;
+namespace App\Http\Controllers\Web\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Web\BaseWebController;
 use Illuminate\Http\Request;
 
-class ReportCardController extends BaseWebController
+abstract class AdminBaseController extends BaseWebController
 {
     //
 }
