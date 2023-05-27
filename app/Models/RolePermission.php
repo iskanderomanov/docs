@@ -14,6 +14,9 @@ class RolePermission extends Pivot
      */
     public const TABLE_NAME = 'role_permission';
 
+    /**
+     * @var string
+     */
     protected $table = self::TABLE_NAME;
 
 }

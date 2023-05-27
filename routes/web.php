@@ -1,23 +1,33 @@
 <?php
 
-use App\Http\Controllers\Web\Accounting\AccountingController;
-use App\Http\Controllers\Web\HR\HRController;
-use App\Http\Controllers\Web\Tabel\TabelController;
+use App\Http\Controllers\Web\Admin\AdminBaseController;
+use App\Http\Controllers\Web\Admin\RoleController;
+use App\Http\Controllers\Web\Auth\AuthController;
+use App\Utils\MiddlewareConstants;
+use App\Utils\RouteConstants;
 use Illuminate\Support\Facades\Route;
 
-
-// Маршрут для "Табельщика"
-Route::middleware('check.admin.access:Tabel')->group(function () {
-    Route::get('/tabel', [TabelController::class, 'index'])->name('admin.tabel');
+/**
+ * Маршрутизатор для аутентификации
+ */
+Route::group([
+    RouteConstants::ROUTE_PREFIX => RouteConstants::ROUTE_PREFIX_AUTH
+], function () {
+    Route::get('/login', [AuthController::class, 'getLoginPage'])->name('auth.get_login');
 });
 
-// Маршрут для "Отдела кадров"
-Route::middleware('check.admin.access:HR')->group(function () {
-    Route::get('/hr', [HRController::class, 'index'])->name('admin.hr');
-});
+/**
+ * Маршрутизатор для админа
+ */
+Route::middleware(MiddlewareConstants::ADMIN_MIDDLEWARE)->group(function () {
+    /**
+     * Маршрутизатор для ролей
+     */
+    Route::group([RouteConstants::ROUTE_PREFIX => RouteConstants::ROUTE_PREFIX_ROLES], function () {
+        Route::get('/', [RoleController::class, 'index'])->name('');
+        Route::get('/create', [RoleController::class, 'create'])->name('');
+    });
 
-// Маршрут для "Бухгалтерии"
-Route::middleware('check.admin.access:Accounting')->group(function () {
-    Route::get('/accounting', [AccountingController::class, 'index'])->name('admin.accounting');
+    Route::get('/admin', [AdminBaseController::class])->name('');
 });
 

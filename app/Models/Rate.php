@@ -20,9 +20,17 @@ class Rate extends BaseModel
      */
     public const RATE_COLUMN = 'rate';
 
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        self::USER_ID_COLUMN,
+        self::RATE_COLUMN
+    ];
 
-    protected $fillable = [self::USER_ID_COLUMN, self::RATE_COLUMN];
-
+    /**
+     * @return BelongsToMany
+     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, self::USER_ID_COLUMN);

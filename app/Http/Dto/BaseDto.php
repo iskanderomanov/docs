@@ -20,7 +20,7 @@ abstract class BaseDto
     /**
      * @return array
      */
-    public final function toArray(): array
+    public function toArray(): array
     {
         $properties = get_object_vars($this);
         $data = [];
