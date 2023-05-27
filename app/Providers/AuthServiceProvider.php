@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
 use App\Models\Role;
+use App\Models\User;
 use App\Policies\AccountingPolicy;
 use App\Policies\HRPolicy;
 use App\Policies\TabelPolicy;
