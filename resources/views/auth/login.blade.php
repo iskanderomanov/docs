@@ -8,7 +8,7 @@
             <div class="card card-md">
                 <div class="card-body">
                     <h2 class="h2 text-center mb-4">Авторизация</h2>
-                    <form action="./" method="get" autocomplete="off" novalidate="">
+                    <form action="{{route(\App\Utils\RouteNames::POST_LOGIN)}}" method="post" class="ajax" autocomplete="off" novalidate="">
                         <div class="mb-3">
                             <label class="form-label">Email адресс</label>
                             <input type="email" name="email" class="form-control" placeholder="your@email.com" autocomplete="off">

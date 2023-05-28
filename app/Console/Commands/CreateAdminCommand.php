@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use App\Http\Dto\Hr\CreateHrDto;
 use App\Http\Enums\UserTypes;
 use App\Models\User;
-use App\Services\Hr\Interfaces\HrServiceInterface;
+use App\Services\User\Interfaces\UserServiceInterface;
 use Illuminate\Console\Command;
 
 class CreateAdminCommand extends Command
@@ -25,16 +25,19 @@ class CreateAdminCommand extends Command
     protected $description = 'Создаем отдел кадров';
 
     /**
-     * @var HrServiceInterface
+     * @var UserServiceInterface
      */
-    private HrServiceInterface $adminService;
+    private UserServiceInterface $userService;
 
+    /**
+     * @param UserServiceInterface $adminService
+     */
     public function __construct(
-        HrServiceInterface $adminService
+        UserServiceInterface $adminService
     )
     {
         parent::__construct();
-        $this->adminService = $adminService;
+        $this->userService = $adminService;
     }
 
     /**
@@ -44,11 +47,11 @@ class CreateAdminCommand extends Command
      */
     public function handle(): int
     {
-        $response = $this->adminService->createAdmin(new CreateHrDto([
+        $response = $this->userService->create(new CreateHrDto([
             User::NAME_COLUMN => 'Developer',
             User::EMAIL_COLUMN => 'dev@dev.dev',
             User::PASSWORD_COLUMN => 'developer',
-            User::USER_TYPE_COLUMN => UserTypes::HR_TYPE
+            User::USER_TYPE_COLUMN => UserTypes::HR_TYPE->value
         ]));
 
         if ($response->isFailed() || $response->getResult() === false) {
