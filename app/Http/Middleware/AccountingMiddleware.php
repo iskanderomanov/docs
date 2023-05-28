@@ -21,6 +21,6 @@ class AccountingMiddleware
             return $next($request);
         }
 
-        return response()->json(['error' => 'Доступ запрещен'], 403);
+        abort(503,'Запрещен доступ');
     }
 }

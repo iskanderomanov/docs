@@ -14,14 +14,15 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     @stack('styles')
 </head>
-<body class="antialiased">
+<body class="antialiased" data-bs-theme="dark">
 <div class="page">
+    @include('layouts.header')
     <header>
         <div class="navbar-expand-md">
 {{--            {!! $navbar_view !!}--}}
         </div>
     </header>
-    <div class="content">
+    <div class="content mt-5">
         @yield('content')
     </div>
 </div>

@@ -11,21 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class HrMiddleware
 {
+
     /**
-     * Прокси для админа
-     *
-     * Handle an incoming request.
-     *
      * @param Request $request
-     * @param Closure(Request): (Response|RedirectResponse) $next
-     * @return JsonResponse
+     * @param Closure $next
+     * @return mixed|void
      */
-    public function handle(Request $request, Closure $next): JsonResponse
+    public function handle(Request $request, Closure $next)
     {
         if (Auth::check() && Auth::user()->isHr()) {
             return $next($request);
         }
 
-        return response()->json(['error' => 'Доступ запрещен'], 403);
+        abort(503,'Запрещен доступ');
     }
 }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->boolean('is_admin')->default(0);
             $table->unsignedInteger('position_id')->nullable();
-            $table->unsignedSmallInteger('user_type')->default(UserTypes::TEACHER_TYPE);
+            $table->unsignedSmallInteger('user_type')->default(UserTypes::TEACHER_TYPE->value);
             $table->string('password');
             $table->timestamps();
         });

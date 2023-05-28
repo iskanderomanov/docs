@@ -7,5 +7,5 @@ use App\Services\ServiceResponse;
 
 interface AuthServiceInterface
 {
-    public function login(BaseLoginAuthDto $dto): ServiceResponse;
+    public function webLogin(BaseLoginAuthDto $dto): ServiceResponse;
 }

@@ -12,18 +12,27 @@ use Illuminate\Support\Facades\Auth;
 class AuthService extends Service implements AuthServiceInterface
 {
     /**
-     * Метод входа
+     * Метод входа для веба
      *
      * @param BaseLoginAuthDto $dto
      * @return ServiceResponse
      */
-    public function login(BaseLoginAuthDto $dto): ServiceResponse
+    public function webLogin(BaseLoginAuthDto $dto): ServiceResponse
     {
-        if (Auth::attempt($dto->toArray())) {
-            return $this->createResponse(true);
+        if (!$this->login($dto)) {
+            $this->addError(new ServiceError('Неверные учётные данные', 422));
+            return $this->createResponse();
         }
 
-        $this->addError(new ServiceError('Неверные учётные данные',422));
-        return $this->createResponse(false);
+        return new ServiceResponse(route(Auth::user()->getMainRouteName()));
+    }
+
+    private function login(BaseLoginAuthDto $dto): bool
+    {
+        if (Auth::attempt($dto->toArray())) {
+            return true;
+        }
+
+        return false;
     }
 }

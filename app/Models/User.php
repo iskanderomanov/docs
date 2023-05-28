@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Dto\Hr\BaseCreateHrDto;
 use App\Http\Enums\UserTypes;
+use App\Utils\RouteNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -16,6 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
     #todo админа в отдельный класс вынести.
 
     /**
@@ -84,11 +86,11 @@ class User extends Authenticatable
     ];
 
     /**
-     * @return HasOne
+     * @return BelongsTo
      */
-    public function position(): HasOne
+    public function position(): BelongsTo
     {
-        return $this->hasOne(Position::class, self::POSITION_ID_COLUMN);
+        return $this->belongsTo(Position::class, self::POSITION_ID_COLUMN);
     }
 
     /**
@@ -98,7 +100,7 @@ class User extends Authenticatable
      */
     public function isHr(): bool
     {
-        return $this->user_type === UserTypes::HR_TYPE;
+        return $this->user_type === UserTypes::HR_TYPE->value;
     }
 
     /**
@@ -108,7 +110,7 @@ class User extends Authenticatable
      */
     public function isAccounting(): bool
     {
-        return $this->user_type === UserTypes::ACCOUNTING_TYPE;
+        return $this->user_type === UserTypes::ACCOUNTING_TYPE->value;
     }
 
     /**
@@ -118,7 +120,7 @@ class User extends Authenticatable
      */
     public function isTimeKeeper(): bool
     {
-        return $this->user_type === UserTypes::TIME_KEEPER_TYPE;
+        return $this->user_type === UserTypes::TIME_KEEPER_TYPE->value;
     }
 
     /**
@@ -137,5 +139,21 @@ class User extends Authenticatable
     public function setPasswordAttribute(string $value): void
     {
         $this->attributes[self::PASSWORD_COLUMN] = Hash::make($value);
+    }
+
+    /**
+     * @return string
+     */
+    public function getMainRouteName(): string
+    {
+        if ($this->isHr()) {
+            return RouteNames::HR_DASHBOARD;
+        }
+
+        if ($this->isAccounting()) {
+            return RouteNames::ACCOUNTING_DASHBOARD;
+        }
+
+        return RouteNames::TIME_KEEPER_DASHBOARD;
     }
 }
