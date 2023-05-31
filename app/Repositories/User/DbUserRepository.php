@@ -2,7 +2,7 @@
 
 namespace App\Repositories\User;
 
-use App\Http\Dto\Hr\BaseGetHrDto;
+use App\Http\Dto\User\BaseGetUserDto;
 use App\Models\User;
 use App\Repositories\User\Interfaces\UserRepositoryInterface;
 use Illuminate\Database\Eloquent\Collection;
@@ -10,10 +10,10 @@ use Illuminate\Database\Eloquent\Collection;
 class DbUserRepository implements UserRepositoryInterface
 {
     /**
-     * @param BaseGetHrDto $dto
+     * @param BaseGetUserDto $dto
      * @return object|null
      */
-    public function getByEmail(BaseGetHrDto $dto): object|null
+    public function getByEmail(BaseGetUserDto $dto): object|null
     {
         return User::query()->where(User::EMAIL_COLUMN,$dto->email)->first();
     }

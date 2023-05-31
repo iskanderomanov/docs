@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Dto\Hr\BaseCreateHrDto;
+use App\Http\Dto\User\BaseCreateUserDto;
 use App\Http\Enums\UserTypes;
 use App\Utils\RouteNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -124,10 +124,10 @@ class User extends Authenticatable
     }
 
     /**
-     * @param BaseCreateHrDto $dto
+     * @param BaseCreateUserDto $dto
      * @return bool
      */
-    public static function createAdmin(BaseCreateHrDto $dto): bool
+    public static function createAdmin(BaseCreateUserDto $dto): bool
     {
         return (new User($dto->toArray()))->save();
     }
