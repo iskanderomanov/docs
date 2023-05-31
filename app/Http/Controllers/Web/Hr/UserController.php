@@ -2,10 +2,17 @@
 
 namespace App\Http\Controllers\Web\Hr;
 
+use App\Http\Dto\Position\EditPositionDto;
+use App\Http\Dto\User\CreateUserDto;
+use App\Http\Dto\User\EditUserDto;
+use App\Http\Requests\User\CreateUserRequest;
+use App\Http\Responses\ResponseBuilder;
 use App\Services\User\Interfaces\UserServiceInterface;
+use App\Utils\RouteNames;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 
 class UserController extends HrBaseController
 {
@@ -34,9 +41,12 @@ class UserController extends HrBaseController
         return view(self::PATH_VIEW . self::USER_VIEW . self::INDEX_VIEW, $response->getResult());
     }
 
-    public function create()
+    /**
+     * @return Factory|View|Application
+     */
+    public function create(): Factory|View|Application
     {
-
+        return view(self::PATH_VIEW . self::USER_VIEW . self::FORM_VIEW);
     }
 
     public function update()
@@ -44,13 +54,16 @@ class UserController extends HrBaseController
 
     }
 
-    public function edit()
+    public function edit(int $id)
     {
+        $response = $this->userService->edit(new EditUserDto(['id' => $id]));
 
+        return view(self::PATH_VIEW . self::USER_VIEW . self::FORM_VIEW, $response->isFailed() ? [] : $response->getResult());
     }
 
-    public function store()
+    public function store(CreateUserRequest $request): JsonResponse
     {
-
+        $this->userService->create(new CreateUserDto($request->toArray()));
+        return ResponseBuilder::jsonRedirect(route(RouteNames::USER_INDEX));
     }
 }

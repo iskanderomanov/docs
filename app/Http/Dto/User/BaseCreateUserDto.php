@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Dto\Hr;
+namespace App\Http\Dto\User;
 
-abstract class BaseCreateHrDto extends BaseHrDto
+abstract class BaseCreateUserDto extends BaseUserDto
 {
     public string $name;
     public string $email;

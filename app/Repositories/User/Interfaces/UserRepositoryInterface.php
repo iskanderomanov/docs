@@ -2,10 +2,10 @@
 
 namespace App\Repositories\User\Interfaces;
 
-use App\Http\Dto\Hr\BaseGetHrDto;
+use App\Http\Dto\User\BaseGetUserDto;
 
 interface UserRepositoryInterface
 {
-    public function getByEmail(BaseGetHrDto $dto);
+    public function getByEmail(BaseGetUserDto $dto);
     public function getAll();
 }

@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Dto\Hr\CreateHrDto;
+use App\Http\Dto\User\CreateUserDto;
 use App\Http\Enums\UserTypes;
 use App\Models\User;
 use App\Services\User\Interfaces\UserServiceInterface;
@@ -47,7 +47,7 @@ class CreateAdminCommand extends Command
      */
     public function handle(): int
     {
-        $response = $this->userService->create(new CreateHrDto([
+        $response = $this->userService->create(new CreateUserDto([
             User::NAME_COLUMN => 'Developer',
             User::EMAIL_COLUMN => 'dev@dev.dev',
             User::PASSWORD_COLUMN => 'developer',

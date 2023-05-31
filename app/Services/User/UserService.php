@@ -2,8 +2,9 @@
 
 namespace App\Services\User;
 
-use App\Http\Dto\Hr\BaseCreateHrDto;
-use App\Http\Dto\Hr\GetHrDto;
+use App\Http\Dto\User\BaseCreateUserDto;
+use App\Http\Dto\User\BaseEditUserDto;
+use App\Http\Dto\User\GetUserDto;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryFactory;
 use App\Repositories\User\Interfaces\UserRepositoryInterface;
@@ -26,12 +27,12 @@ class UserService extends Service implements UserServiceInterface
     }
 
     /**
-     * @param BaseCreateHrDto $dto
+     * @param BaseCreateUserDto $dto
      * @return ServiceResponse
      */
-    public function create(BaseCreateHrDto $dto): ServiceResponse
+    public function create(BaseCreateUserDto $dto): ServiceResponse
     {
-        $user = $this->repository->getByEmail(new GetHrDto($dto->toArray()));
+        $user = $this->repository->getByEmail(new GetUserDto($dto->toArray()));
 
         if(!is_null($user)){
             return $this->createResponse(false);
@@ -41,6 +42,9 @@ class UserService extends Service implements UserServiceInterface
         return $this->createResponse($user);
     }
 
+    /**
+     * @return ServiceResponse
+     */
     public function index(): ServiceResponse
     {
         return $this->createResponse([
@@ -48,9 +52,9 @@ class UserService extends Service implements UserServiceInterface
         ]);
     }
 
-    public function edit(): ServiceResponse
+    public function edit(BaseEditUserDto $dto): ServiceResponse
     {
-        // TODO: Implement edit() method.
+
     }
 
     public function update(): ServiceResponse
