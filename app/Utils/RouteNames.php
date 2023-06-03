@@ -20,5 +20,10 @@ class RouteNames
     public const USER_STORE = 'users.store';
     public const USER_EDIT = 'users.edit';
     public const USER_UPDATE = 'users.update';
+    public const REPORT_CARDS_INDEX = 'report_cards.index';
+    public const REPORT_CARDS_CREATE = 'report_cards.create';
+    public const REPORT_CARDS_EDIT = 'report_cards.edit';
+    public const REPORT_CARDS_UPDATE = 'report_cards.update';
+    public const REPORT_CARDS_STORE = 'report_cards.store';
 
 }

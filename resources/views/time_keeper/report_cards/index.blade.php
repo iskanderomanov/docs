@@ -10,11 +10,14 @@ use App\Models\ReportCard;
 @section('content')
     <div class="container-xl">
         <div class="col-12">
+            <div class="alert alert-warning" role="alert">
+                Табель можно создать только за прошлый месяц.
+            </div>
             <div class="card-header">
                 <ul class="nav nav-pills ">
                     <li class="nav-item ms-auto">
                         <a class="nav-link"
-                           href="">
+                           href="{{route(\App\Utils\RouteNames::REPORT_CARDS_CREATE)}}">
                             Создать
                         </a>
                     </li>
@@ -54,7 +57,7 @@ use App\Models\ReportCard;
                                     <div class="text-muted">{{$reportCard->created_at}}</div>
                                 </td>
                                 <td>
-                                    <a href="">Изменить</a>
+                                    <a href="{{ route(\App\Utils\RouteNames::REPORT_CARDS_EDIT, $reportCard->id) }}">Изменить</a>
                                 </td>
                             </tr>
                         @endforeach
