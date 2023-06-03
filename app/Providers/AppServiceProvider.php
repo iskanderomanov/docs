@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\ReportCard\Interfaces\ReportCardServiceInterface;
+use App\Services\ReportCard\ReportCardService;
 use App\Services\User\UserService;
 use App\Services\User\Interfaces\UserServiceInterface;
 use App\Services\Auth\AuthService;
@@ -25,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(UserServiceInterface::class, UserService::class);
         $this->app->bind(AuthServiceInterface::class,AuthService::class);
         $this->app->bind(PositionServiceInterface::class, PositionService::class);
+        $this->app->bind(ReportCardServiceInterface::class, ReportCardService::class);
     }
 
     /**

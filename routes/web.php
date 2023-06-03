@@ -5,6 +5,7 @@ use App\Http\Controllers\Web\Auth\AuthController;
 use App\Http\Controllers\Web\Hr\HrController;
 use App\Http\Controllers\Web\Hr\PositionController;
 use App\Http\Controllers\Web\Hr\UserController;
+use App\Http\Controllers\Web\TimeKeeper\ReportCardController;
 use App\Http\Controllers\Web\TimeKeeper\TimeKeeperController;
 use App\Utils\MiddlewareNames;
 use App\Utils\RouteConstants;
@@ -50,6 +51,11 @@ Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::HR_MIDDLEW
  */
 Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::TIME_KEEPER_MIDDLEWARE])->group(function () {
     Route::get('/time-keeper', [TimeKeeperController::class, 'dashboard'])->name(RouteNames::TIME_KEEPER_DASHBOARD);
+    Route::get('/report-cards/', [ReportCardController::class, 'index'])->name(RouteNames::REPORT_CARDS_INDEX);
+    Route::get('/report-cards/edit/{id}', [ReportCardController::class, 'edit'])->name(RouteNames::REPORT_CARDS_EDIT);
+    Route::get('/report-cards/create', [ReportCardController::class, 'create'])->name(RouteNames::REPORT_CARDS_CREATE);
+    Route::post('/report-cards/store', [ReportCardController::class, 'store'])->name(RouteNames::REPORT_CARDS_STORE);
+    Route::post('/report-cards/update/{id}', [ReportCardController::class, 'update'])->name(RouteNames::REPORT_CARDS_UPDATE);
 });
 
 /**
