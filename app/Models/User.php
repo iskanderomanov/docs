@@ -8,17 +8,25 @@ use App\Http\Enums\UserTypes;
 use App\Utils\RouteNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
+/**
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property bool $is_time_keeper
+ * @property int $position_id
+ * @property int $user_type
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    #todo админа в отдельный класс вынести.
 
     /**
      * Название колонки в таблице для хранения имени пользователя.
@@ -53,7 +61,7 @@ class User extends Authenticatable
      *
      * @var string
      */
-    public const IS_ADMIN_COLUMN = 'is_admin';
+    public const IS_TIME_KEEPER_COLUMN = 'is_time_keeper';
 
     /**
      * Название колонки в таблице для хранения идентификатора должности пользователя.
@@ -72,7 +80,7 @@ class User extends Authenticatable
         self::EMAIL_COLUMN,
         self::PASSWORD_COLUMN,
         self::USER_TYPE_COLUMN,
-        self::IS_ADMIN_COLUMN,
+        self::IS_TIME_KEEPER_COLUMN,
         self::POSITION_ID_COLUMN
     ];
 
@@ -120,7 +128,7 @@ class User extends Authenticatable
      */
     public function isTimeKeeper(): bool
     {
-        return $this->user_type === UserTypes::TIME_KEEPER_TYPE->value;
+        return ($this->user_type === UserTypes::TEACHER_TYPE->value) && ($this->is_time_keeper);
     }
 
     /**
@@ -155,5 +163,13 @@ class User extends Authenticatable
         }
 
         return RouteNames::TIME_KEEPER_DASHBOARD;
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function reportCards(): HasMany
+    {
+        return $this->hasMany(ReportCard::class, ReportCard::USER_ID);
     }
 }
