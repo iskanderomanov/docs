@@ -1,0 +1,67 @@
+<?php
+
+use App\Models\ReportCard;
+
+/**
+ * @var ReportCard[] $reportCards
+ */
+?>
+@extends('layouts.master')
+@section('content')
+    <div class="container-xl">
+        <div class="col-12">
+            <div class="card-header">
+                <ul class="nav nav-pills ">
+                    <li class="nav-item ms-auto">
+                        <a class="nav-link"
+                           href="">
+                            Создать
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-vcenter card-table">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Статус</th>
+                            <th>Дата создания</th>
+                            <th>Действие</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($reportCards as $reportCard)
+                            <tr>
+                                <td>
+                                    <div class="d-flex py-1 align-items-center">
+                                        {{$reportCard->id}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-muted">{{$reportCard->name}}</div>
+                                </td>
+                                <td>
+                                    <div class="text-muted">
+                                        <p class="badge {{$reportCard->getStatusCssClass()}}">
+                                            {{$reportCard->getStatusText()}}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="text-muted">{{$reportCard->created_at}}</div>
+                                </td>
+                                <td>
+                                    <a href="">Изменить</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection

@@ -7,6 +7,11 @@ use App\Http\Dto\Position\BaseUpdatePositionDto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @property int $id
+ * @property int $position_id
+ * @property string $name
+ */
 class Position extends BaseModel
 {
     use HasFactory;
