@@ -14,6 +14,12 @@ class RouteNames
     public const POSITION_EDIT = 'position_edit';
     public const POSITION_UPDATE = 'position_update';
     public const POSITION_SHOW = 'position.show';
+    public const DEPARTMENT_INDEX = 'department.index';
+    public const DEPARTMENT_CREATE = 'department.create';
+    public const DEPARTMENT_STORE = 'department.store';
+    public const DEPARTMENT_EDIT = 'department_edit';
+    public const DEPARTMENT_UPDATE = 'department_update';
+    public const DEPARTMENT_SHOW = 'department.show';
     public const GET_LOGIN = 'auth.get_login';
     public const USER_INDEX = 'users.index';
     public const USER_CREATE = 'users.create';

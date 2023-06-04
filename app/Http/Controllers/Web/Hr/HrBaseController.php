@@ -10,5 +10,6 @@ abstract class HrBaseController extends BaseWebController
 {
     public const PATH_VIEW = 'hr.';
     public const POSITION_VIEW = 'positions.';
+    public const DEPARTMENT_VIEW = 'departments.';
 
 }

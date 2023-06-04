@@ -4,6 +4,7 @@ namespace App\Services\User\Interfaces;
 
 use App\Http\Dto\User\BaseCreateUserDto;
 use App\Http\Dto\User\BaseEditUserDto;
+use App\Http\Dto\User\BaseUpdateUserDto;
 use App\Services\ServiceResponse;
 
 interface UserServiceInterface
@@ -12,9 +13,9 @@ interface UserServiceInterface
 
     public function edit(BaseEditUserDto $dto): ServiceResponse;
 
-    public function update(): ServiceResponse;
+    public function update(BaseUpdateUserDto $dto): ServiceResponse;
 
-    public function store(): ServiceResponse;
+    public function store(BaseCreateUserDto $dto): ServiceResponse;
 
-    public function create(BaseCreateUserDto $dto): ServiceResponse;
+    public function getCreate(): ServiceResponse;
 }

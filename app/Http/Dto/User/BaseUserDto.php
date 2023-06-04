@@ -6,5 +6,5 @@ use App\Http\Dto\BaseDto;
 
 abstract class BaseUserDto extends BaseDto
 {
-
+    public ?int $id;
 }
