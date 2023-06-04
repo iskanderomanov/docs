@@ -27,13 +27,15 @@ class RateSeeder extends Seeder
             ]);
         }
 
-        foreach ($teachers as $teacher) {
-            $rate = rand(0.1, 0.95);
-            Rate::create([
-                'user_id' => $teacher->id,
-                'rate' => $rate,
-                'rate_type' => 2,
-            ]);
+        foreach ($teachers as $key => $teacher) {
+            if($key % 2 === 0) {
+                $rate = rand(0.1, 0.95);
+                Rate::create([
+                    'user_id' => $teacher->id,
+                    'rate' => $rate,
+                    'rate_type' => 2,
+                ]);
+            }
         }
         $teachers = User::where('user_type', UserTypes::TEACHER_TYPE->value)->where('is_in_state', false)->get();
 

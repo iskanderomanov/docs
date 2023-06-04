@@ -21,11 +21,12 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Иван Иванов',
                 'email' => 'ivan.ivanov@example.com',
-                'is_time_keeper' => false,
+                'is_time_keeper' => true,
                 'is_in_state' => true,
                 'position_id' => 1,
                 'user_type' => UserTypes::TEACHER_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
+                'department_id' => 1
             ],
             [
                 'name' => 'Анна Смирнова',
@@ -34,7 +35,8 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 6,
                 'user_type' => UserTypes::TEACHER_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
+                'department_id' => 1
             ],
             [
                 'name' => 'Петр Петров',
@@ -43,7 +45,9 @@ class UserSeeder extends Seeder
                 'is_in_state' => true,
                 'position_id' => 7,
                 'user_type' => UserTypes::TEACHER_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
+                'department_id' => 1
+
             ],
             [
                 'name' => 'Мария Сидорова',
@@ -52,7 +56,9 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 4,
                 'user_type' => UserTypes::TEACHER_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
+                'department_id' => 1
+
             ],
             [
                 'name' => 'Алексей Николаев',
@@ -61,7 +67,9 @@ class UserSeeder extends Seeder
                 'is_in_state' => true,
                 'position_id' => 5,
                 'user_type' => UserTypes::TEACHER_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
+                'department_id' => 1
+
             ],
         ];
 
@@ -74,7 +82,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::ACCOUNTING_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Ольга Иванова',
@@ -83,7 +91,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::ACCOUNTING_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Сергей Петров',
@@ -92,7 +100,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::ACCOUNTING_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Наталья Сидорова',
@@ -101,7 +109,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::ACCOUNTING_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Дмитрий Николаев',
@@ -110,7 +118,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::ACCOUNTING_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
         ];
 
@@ -123,7 +131,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::HR_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Андрей Смирнов',
@@ -132,7 +140,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::HR_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Екатерина Иванова',
@@ -141,7 +149,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::HR_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Илья Сидоров',
@@ -150,7 +158,7 @@ class UserSeeder extends Seeder
                 'is_in_state' => false,
                 'position_id' => 0,
                 'user_type' => UserTypes::HR_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
             [
                 'name' => 'Ксения Николаева',
@@ -158,7 +166,7 @@ class UserSeeder extends Seeder
                 'is_time_keeper' => false,
                 'is_in_state' => false,
                 'user_type' => UserTypes::HR_TYPE->value,
-                'password' => bcrypt('password'),
+                'password' => 'password',
             ],
         ];
 
