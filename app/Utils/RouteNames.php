@@ -31,5 +31,4 @@ class RouteNames
     public const REPORT_CARDS_EDIT = 'report_cards.edit';
     public const REPORT_CARDS_UPDATE = 'report_cards.update';
     public const REPORT_CARDS_STORE = 'report_cards.store';
-
 }

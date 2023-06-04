@@ -1,12 +1,17 @@
-@php use App\Utils\RouteNames;
- /**
-* @var \App\Models\User[] $regularWorkers
+<?php
+
+use App\Utils\RouteNames;
+
+/**
+ * @var \App\Models\User[] $regularWorkers
  */
 
- $lastMonth = now()->subMonth();
- $daysInLastMonth = $lastMonth->daysInMonth();
- $dayOfWeek = $lastMonth->startOfMonth()->format('l');
-@endphp
+$lastMonth = Carbon\Carbon::now()->subMonth();
+$daysInLastMonth = $lastMonth->copy()->endOfMonth()->day;
+$dayOfWeek = $lastMonth->startOfMonth()->format('l');
+?>
+
+
 @extends('layouts.master')
 @section('content')
     <div class="container-xl">
@@ -30,44 +35,114 @@
                     method="post" class="ajax">
                     <div class="card-body">
                         <div class="mb-3">
-                            <table class="table table-vcenter card-table">
-                                <thead>
-                                <tr>
-                                    <th rowspan="2">ID</th>
-                                    <th>ФИО</th>
-                                    <th>Должность</th>
-                                    <th>яв к</th>
-                                    <th colspan="{{$daysInLastMonth}}">Дни</th>
-                                    <th rowspan="2">Рабочие дни</th>
-                                </tr>
-                                <tr>
-                                    <th colspan="3">Штатные сотрудники</th>
-                                    @foreach(range(1,$daysInLastMonth) as $day)
-                                        <th>{{$day}}</th>
-                                    @endforeach
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($regularWorkers as $regularWorker)
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
                                     <tr>
-                                        <td>{{$loop->iteration}}</td>
-                                        <td>{{$regularWorker->name}}</td>
-                                        <td>{{$regularWorker->position?->name}}</td>
-                                        <td></td>
-                                        <input type="hidden" class="form-control" name="regularWorkers[{{$loop->iteration}}]['name']"
-                                               value="{{$regularWorker->name}}">
-                                        <input type="hidden" class="form-control" name="regularWorkers[{{$loop->iteration}}]['name']"
-                                               value="{{$regularWorker->position?->name}}">
-                                        <input type="text" class="form-control" name="name" id="name"
-                                               value="{{$position->name ?? ''}}"
-                                               placeholder="Пример: Доцент">
+                                        <th rowspan="2" class="align-items-center center" style="display: table-cell;
+    vertical-align: middle">ID
+                                        </th>
+                                        <th rowspan="2" style="display: table-cell;
+    vertical-align: middle">ФИО</th>
+                                        <th rowspan="2" style="display: table-cell;
+    vertical-align: middle">Должность</th>
+                                        <th rowspan="2" style="display: table-cell;
+    vertical-align: middle">яв к</th>
+                                        <th colspan="{{$daysInLastMonth}}" class="text-center">Дни</th>
+                                        <th rowspan="2" style="display: table-cell;
+    vertical-align: middle">Рабочие дни
+                                        </th>
                                     </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
+                                    <tr>
+                                        @foreach(range(1,$daysInLastMonth) as $day)
+                                            <th>{{$day}}</th>
+                                        @endforeach
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <th colspan="{{$daysInLastMonth + 5}}" class="text-center">Штатта иштегендер</th>
+                                    @foreach($regularWorkers as $regularWorker)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$regularWorker->name}}</td>
+                                            <td>{{$regularWorker->position?->name}}</td>
+                                            <td>
+                                                {{$regularWorker->rates[0]->rate}}
+                                            </td>
+                                            @foreach(range(1,$daysInLastMonth) as $day)
+                                                <td><input style="width: 25px" type="int" value="{{6}}"
+                                                           name='regularWorkers[{{$regularWorker->id}}][{{$day}}]'/>
+                                                </td>
+                                            @endforeach
+                                            <td>23</td>
+
+                                            <input type="hidden" class="form-control"
+                                                   name="regularWorkers[{{$loop->iteration}}]['name']"
+                                                   value="{{$regularWorker->name}}">
+                                            <input type="hidden" class="form-control"
+                                                   name="regularWorkers[{{$loop->iteration}}]['name']"
+                                                   value="{{$regularWorker->position?->name}}">
+                                            <input type="hidden" class="form-control" name="name" id="name"
+                                                   value="{{$position->name ?? ''}}"
+                                            >
+                                        </tr>
+                                    @endforeach
+                                    <th colspan="{{$daysInLastMonth + 5}}" class="text-center">Кошумча ставка</th>
+                                    @foreach($additionalWorkers as $regularWorker)
+                                        @if(isset($regularWorker->rates[0]))
+                                            <tr>
+                                                <td>{{$loop->iteration}}</td>
+                                                <td>{{$regularWorker->name}}</td>
+                                                <td>{{$regularWorker->position?->name}}</td>
+                                                <td>
+                                                    {{$regularWorker->rates[0]->rate}}
+                                                </td>
+                                                @foreach(range(1,$daysInLastMonth) as $day)
+                                                    <td><input style="width: 25px" type="int" value="{{6}}"
+                                                               name='additionalWorker[{{$regularWorker->id}}][{{$day}}]'/>
+                                                    </td>
+                                                @endforeach
+                                                <td>23</td>
+
+                                                <input type="hidden" class="form-control"
+                                                       name="additionalWorker[{{$loop->iteration}}]['name']"
+                                                       value="{{$regularWorker->name}}">
+                                                <input type="hidden" class="form-control"
+                                                       name="additionalWorker[{{$loop->iteration}}]['name']"
+                                                       value="{{$regularWorker->position?->name}}">
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    <th colspan="{{$daysInLastMonth + 5}}" class="text-center">Айкалыштырып иштегендер
+                                    </th>
+                                    @foreach($hiredWorkers as $regularWorker)
+                                        <tr>
+                                            <td>{{$loop->iteration}}</td>
+                                            <td>{{$regularWorker->name}}</td>
+                                            <td>{{$regularWorker->position?->name}}</td>
+                                            <td>
+                                                {{$regularWorker->rates[0]->rate}}
+                                            </td>
+                                            @foreach(range(1,$daysInLastMonth) as $day)
+                                                <td><input style="width: 25px" type="int" value="{{6}}"
+                                                           name='hiredWorkers[{{$regularWorker->id}}][{{$day}}]'/></td>
+                                            @endforeach
+                                            <td>23</td>
+
+                                            <input type="hidden" class="form-control"
+                                                   name="hiredWorkers[{{$loop->iteration}}]['name']"
+                                                   value="{{$regularWorker->name}}">
+                                            <input type="hidden" class="form-control"
+                                                   name="hiredWorkers[{{$loop->iteration}}]['name']"
+                                                   value="{{$regularWorker->position?->name}}">
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="invalid-feedback" id="error"></div>
+                            <button class="btn btn-success" type="submit">Сохранить</button>
                         </div>
-                        <div class="invalid-feedback" id="error"></div>
-                        <button class="btn btn-success" type="submit">Сохранить</button>
                     </div>
                 </form>
             </div>
@@ -75,3 +150,6 @@
     </div>
     <!-- Content here -->
 @endsection
+<?php
+#todo Написать функцию окторая будет определять выходной сегодня или нет
+?>

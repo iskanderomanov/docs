@@ -4,6 +4,8 @@ namespace App\Services\ReportCard;
 
 use App\Repositories\ReportCard\Interfaces\ReportCardRepositoryInterface;
 use App\Repositories\ReportCard\ReportCardRepositoryFactory;
+use App\Repositories\User\Interfaces\UserRepositoryInterface;
+use App\Repositories\User\UserRepositoryFactory;
 use App\Services\ReportCard\Interfaces\ReportCardServiceInterface;
 use App\Services\Service;
 use App\Services\ServiceResponse;
@@ -13,10 +15,12 @@ class ReportCardService extends Service implements ReportCardServiceInterface
     public const REPORT_CARDS = 'reportCards';
     public const REPORT_CARD = 'reportCard';
     private ReportCardRepositoryInterface $reportCardRepository;
+    private UserRepositoryInterface $userRepository;
 
     public function __construct()
     {
         $this->reportCardRepository = (new ReportCardRepositoryFactory())->createRepository();
+        $this->userRepository = (new UserRepositoryFactory())->createRepository();
     }
 
     public function index(): ServiceResponse
@@ -28,7 +32,12 @@ class ReportCardService extends Service implements ReportCardServiceInterface
 
     public function create(): ServiceResponse
     {
-        return $this->createResponse([]);
+        $departmentId = auth()->user()->department_id;
+        return $this->createResponse([
+            'regularWorkers' => $this->userRepository->getRegularTeachers($departmentId),
+            'additionalWorkers' => $this->userRepository->getAdditionalTeachers($departmentId),
+            'hiredWorkers' => $this->userRepository->getHiredTeachers($departmentId)
+        ]);
     }
 
     public function store(): ServiceResponse
