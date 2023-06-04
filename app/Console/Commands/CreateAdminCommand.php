@@ -47,7 +47,7 @@ class CreateAdminCommand extends Command
      */
     public function handle(): int
     {
-        $response = $this->userService->create(new CreateUserDto([
+        $response = $this->userService->store(new CreateUserDto([
             User::NAME_COLUMN => 'Developer',
             User::EMAIL_COLUMN => 'dev@dev.dev',
             User::PASSWORD_COLUMN => 'developer',

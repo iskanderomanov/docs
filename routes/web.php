@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Web\Accounting\AccountingController;
 use App\Http\Controllers\Web\Auth\AuthController;
+use App\Http\Controllers\Web\Hr\DepartmentController;
 use App\Http\Controllers\Web\Hr\HrController;
 use App\Http\Controllers\Web\Hr\PositionController;
 use App\Http\Controllers\Web\Hr\UserController;
@@ -26,7 +27,7 @@ Route::group([
 /**
  * Маршрутизатор для отдел кадров
  */
-Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::HR_MIDDLEWARE])->group(function () {
+Route::prefix('hr')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::HR_MIDDLEWARE])->group(function () {
     Route::get('/', [HrController::class, 'dashboard'])->name(RouteNames::HR_DASHBOARD);
     Route::resource('/positions', PositionController::class)->names([
         RouteConstants::RESOURCE_INDEX => RouteNames::POSITION_INDEX,
@@ -36,6 +37,15 @@ Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::HR_MIDDLEW
         RouteConstants::RESOURCE_EDIT => RouteNames::POSITION_EDIT,
     ])->except(RouteConstants::RESOURCE_UPDATE);
     Route::post('/positions/{position}', [PositionController::class, 'update'])->name(RouteNames::POSITION_UPDATE);
+
+    Route::resource('/departments', DepartmentController::class)->names([
+        RouteConstants::RESOURCE_INDEX => RouteNames::DEPARTMENT_INDEX,
+        RouteConstants::RESOURCE_CREATE => RouteNames::DEPARTMENT_CREATE,
+        RouteConstants::RESOURCE_STORE => RouteNames::DEPARTMENT_STORE,
+        RouteConstants::RESOURCE_SHOW => RouteNames::DEPARTMENT_SHOW,
+        RouteConstants::RESOURCE_EDIT => RouteNames::DEPARTMENT_EDIT,
+    ])->except(RouteConstants::RESOURCE_UPDATE);
+    Route::post('/departments/{departments}', [DepartmentController::class, 'update'])->name(RouteNames::DEPARTMENT_UPDATE);
 
     Route::resource('/users', UserController::class)->names([
         RouteConstants::RESOURCE_INDEX => RouteNames::USER_INDEX,
@@ -49,7 +59,7 @@ Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::HR_MIDDLEW
 /**
  * Маршрутизатор для табельщика
  */
-Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::TIME_KEEPER_MIDDLEWARE])->group(function () {
+Route::prefix('time-keeper')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::TIME_KEEPER_MIDDLEWARE])->group(function () {
     Route::get('/time-keeper', [TimeKeeperController::class, 'dashboard'])->name(RouteNames::TIME_KEEPER_DASHBOARD);
     Route::get('/report-cards/', [ReportCardController::class, 'index'])->name(RouteNames::REPORT_CARDS_INDEX);
     Route::get('/report-cards/edit/{id}', [ReportCardController::class, 'edit'])->name(RouteNames::REPORT_CARDS_EDIT);
@@ -61,6 +71,6 @@ Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::TIME_KEEPE
 /**
  * Маршрутизатор для бухгалтера
  */
-Route::middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::ACCOUNTING_MIDDLEWARE])->group(function () {
+Route::prefix('accounting')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::ACCOUNTING_MIDDLEWARE])->group(function () {
     Route::get('/accounting', [AccountingController::class, 'dashboard'])->name(RouteNames::ACCOUNTING_DASHBOARD);
 });

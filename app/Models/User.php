@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Dto\User\BaseCreateUserDto;
+use App\Http\Enums\RateTypes;
 use App\Http\Enums\UserTypes;
 use App\Utils\RouteNames;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +24,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property bool $is_time_keeper
  * @property int $position_id
  * @property int $user_type
+ * @property int $department_id
  */
 class User extends Authenticatable
 {
@@ -71,6 +73,20 @@ class User extends Authenticatable
     public const POSITION_ID_COLUMN = 'position_id';
 
     /**
+     * Название колонки в таблице для хранения идентификатора кафедры пользователя.
+     *
+     * @var string
+     */
+    public const DEPARTMENT_ID_COLUMN = 'department_id';
+
+    /**
+     * Название колонки в таблице для хранения информации о том, является ли пользователь штатным соотрудником.
+     *
+     * @var string
+     */
+    public const IS_IN_STATE = 'is_in_state';
+
+    /**
      * Атрибуты, которые массово назначаемые.
      *
      * @var array<int, string>
@@ -81,7 +97,9 @@ class User extends Authenticatable
         self::PASSWORD_COLUMN,
         self::USER_TYPE_COLUMN,
         self::IS_TIME_KEEPER_COLUMN,
-        self::POSITION_ID_COLUMN
+        self::POSITION_ID_COLUMN,
+        self::DEPARTMENT_ID_COLUMN,
+        self::IS_IN_STATE
     ];
 
     /**
@@ -101,6 +119,18 @@ class User extends Authenticatable
         return $this->belongsTo(Position::class, self::POSITION_ID_COLUMN);
     }
 
+    /**
+     * @return BelongsTo
+     */
+    public function department(): BelongsTo
+    {
+        return $this->belongsTo(Department::class, self::DEPARTMENT_ID_COLUMN);
+    }
+
+    public function rates(): HasMany
+    {
+        return $this->hasMany(Rate::class);
+    }
     /**
      * Является ОК
      *
@@ -133,13 +163,23 @@ class User extends Authenticatable
 
     /**
      * @param BaseCreateUserDto $dto
-     * @return bool
+     * @return User
      */
-    public static function createAdmin(BaseCreateUserDto $dto): bool
+    public static function create(BaseCreateUserDto $dto): User
     {
-        return (new User($dto->toArray()))->save();
+        $user = new User($dto->toArray());
+        $user->save();
+
+        return $user;
     }
 
+    public static function createUser(array $user): User
+    {
+        $user = new User($user);
+        $user->save();
+
+        return $user;
+    }
     /**
      * @param string $value
      * @return void
@@ -171,5 +211,19 @@ class User extends Authenticatable
     public function reportCards(): HasMany
     {
         return $this->hasMany(ReportCard::class, ReportCard::USER_ID);
+    }
+
+    public static function createRates(array $rates, int $userId): User
+    {
+        $user = self::find($userId);
+        foreach ($rates as $rateType => $rateValue) {
+            $rate = new Rate();
+            $rate->rate = (float) $rateValue;
+            $rate->rate_type = RateTypes::getRateId($rateType);
+            $rate->user_id = $user->id;
+            $rate->save();
+            dump($rate, $rates);
+        }
+        return $user;
     }
 }

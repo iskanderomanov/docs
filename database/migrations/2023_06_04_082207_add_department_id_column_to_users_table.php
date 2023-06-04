@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rates', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedInteger('user_id')->default(0);
-            $table->unsignedFloat('rate')->default(0);
-            $table->unsignedSmallInteger('rate_type')->default(1);
-            $table->timestamps();
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('department_id')->nullable();
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rates');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('department_id');
+        });
     }
 };

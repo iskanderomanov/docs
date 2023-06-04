@@ -4,5 +4,5 @@ namespace App\Http\Dto\User;
 
 class BaseEditUserDto extends BaseUserDto
 {
-    public int $id;
+    public ?int $id;
 }

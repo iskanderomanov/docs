@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace App\Http\Dto;
 
+use ReflectionClass;
+
 abstract class BaseDto
 {
     /**
@@ -12,7 +14,7 @@ abstract class BaseDto
     {
         foreach ($attributes as $key => $value) {
             if (property_exists($this, $key)) {
-                $this->{$key} = $value;
+                $this->{$key} = $this->castValue($value, $key);
             }
         }
     }
@@ -43,5 +45,23 @@ abstract class BaseDto
     public final static function fromArray(array $data): self
     {
         return new static($data);
+    }
+
+    private function castValue($value, $key)
+    {
+        $class = static::class;
+        $reflector = new ReflectionClass($class);
+        $property = $reflector->getProperty($key);
+        $type = $property->getType();
+
+        switch ($type->getName()){
+            case 'int': return (int)$value;
+            case 'bool': return (bool)$value;
+        }
+//        if ($type && $type->getName() === 'int' && is_numeric($value)) {
+//            return (int)$value;
+//        }
+
+        return $value;
     }
 }
