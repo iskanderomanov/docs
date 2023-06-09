@@ -61,10 +61,10 @@ class UserController extends HrBaseController
         return view(self::PATH_VIEW . self::USER_VIEW . self::FORM_VIEW, $position->getResult());
     }
 
-    public function update(UpdateUserRequest $request)
+    public function update(int $id,UpdateUserRequest $request)
     {
         $this->userService->update(new UpdateUserDto(['id' => $id, ...$request->toArray()]));
-        return ResponseBuilder::jsonRedirect(route(RouteNames::POSITION_INDEX));
+        return ResponseBuilder::jsonRedirect(route(RouteNames::USER_INDEX));
     }
 
     public function edit(int $id)

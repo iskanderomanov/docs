@@ -58,10 +58,18 @@ abstract class BaseDto
             case 'int': return (int)$value;
             case 'bool': return (bool)$value;
         }
-//        if ($type && $type->getName() === 'int' && is_numeric($value)) {
-//            return (int)$value;
-//        }
 
         return $value;
+    }
+
+    public function toArrayExcept(...$keys): array
+    {
+        $data = $this->toArray();
+
+        foreach ($keys as $key) {
+            unset($data[$key]);
+        }
+
+        return $data;
     }
 }

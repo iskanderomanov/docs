@@ -28,7 +28,13 @@ class CreateUserRequest extends BaseUserRequest
             self::PASSWORD => 'string|required',
             self::EMAIL => 'email|required',
             self::USER_TYPE_ID => 'required|integer',
-            self::POSITION_ID => 'nullable|integer'
+            self::POSITION_ID => 'nullable|integer',
+            self::DEPARTMENT_ID => 'nullable|integer',
+            self::IS_IN_STATE => 'nullable|string',
+            self::IS_TIME_KEEPER => 'nullable|string',
+            self::RATE_MAIN => 'nullable|numeric',
+            self::RATE_HIRED => 'nullable|numeric',
+            self::RATE_ADDITIONAL => 'nullable|numeric',
         ];
     }
 }

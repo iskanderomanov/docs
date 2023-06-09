@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Http\Dto\User\BaseCreateUserDto;
+use App\Http\Dto\User\BaseUpdateUserDto;
 use App\Http\Enums\RateTypes;
 use App\Http\Enums\UserTypes;
 use App\Utils\RouteNames;
@@ -173,6 +174,15 @@ class User extends Authenticatable
         return $user;
     }
 
+    /**
+     * @param BaseUpdateUserDto $dto
+     * @return User
+     */
+    public static function updateUser(BaseUpdateUserDto $dto): int
+    {
+        return User::whereId($dto->id)->update($dto->toArrayExcept('rate'));
+    }
+
     public static function createUser(array $user): User
     {
         $user = new User($user);
@@ -222,7 +232,20 @@ class User extends Authenticatable
             $rate->rate_type = RateTypes::getRateId($rateType);
             $rate->user_id = $user->id;
             $rate->save();
-            dump($rate, $rates);
+        }
+        return $user;
+    }
+
+    public static function updateRates(array $rates, int $userId): User
+    {
+        $user = self::find($userId);
+        $user->rates()->delete();
+        foreach ($rates as $rateType => $rateValue) {
+            $rate = new Rate();
+            $rate->rate = (float) $rateValue;
+            $rate->rate_type = RateTypes::getRateId($rateType);
+            $rate->user_id = $user->id;
+            $rate->save();
         }
         return $user;
     }

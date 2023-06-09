@@ -2,14 +2,10 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Requests\Position\BasePositionRequest;
 use Illuminate\Support\Facades\Auth;
 
 class UpdateUserRequest extends BaseUserRequest
 {
-    const RATE_MAIN = 'rate.main';
-    const RATE_ADDITIONAL = 'rate.additional';
-    const RATE_HIRED = 'rate.hired';
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -33,9 +29,13 @@ class UpdateUserRequest extends BaseUserRequest
             self::EMAIL => 'email|required',
             self::USER_TYPE_ID => 'required|integer',
             self::POSITION_ID => 'nullable|integer',
-            self::RATE_MAIN => 'nullable|float',
-            self::RATE_HIRED => 'nullable|float',
-            self::RATE_ADDITIONAL => 'nullable|float',
+            self::DEPARTMENT_ID => 'nullable|integer',
+            self::IS_TIME_KEEPER => 'nullable|string',
+            self::IS_IN_STATE => 'nullable|string',
+            self::RATE_MAIN => 'nullable|numeric',
+            self::RATE_HIRED => 'nullable|numeric',
+            self::RATE_ADDITIONAL => 'nullable|numeric',
         ];
     }
+
 }
