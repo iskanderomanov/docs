@@ -41,6 +41,20 @@ enum StatusTypes: int
     }
 
     /**
+     * @return array
+     */
+    public static function getStatusesText(): array
+    {
+        return [
+            self::AWAITING_VERIFICATION_HR->value => 'Ожидает проверки ОК',
+            self::ERROR_FROM_HR->value => 'Не прошла проверку ОК',
+            self::AWAITING_VERIFICATION_ACCOUNTING->value => 'Ожидает проверки Бухгалтерии',
+            self::ERROR_FROM_ACCOUNTING->value => 'Не прошла проверку Бухгалтерии',
+            self::SUCCESS->value => 'Успешно'
+        ];
+    }
+
+    /**
      * @param int $val
      * @return string
      */

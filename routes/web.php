@@ -54,6 +54,10 @@ Route::prefix('hr')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNam
         RouteConstants::RESOURCE_EDIT => RouteNames::USER_EDIT,
     ])->except(RouteConstants::RESOURCE_UPDATE);
     Route::post('/users/{user}', [UserController::class, 'update'])->name(RouteNames::USER_UPDATE);
+    Route::get('/report_cards', [\App\Http\Controllers\Web\Hr\ReportCardController::class,'index'])->name(RouteNames::HR_REPORT_CARDS_INDEX);
+    Route::get('/report_cards/{id}', [\App\Http\Controllers\Web\Hr\ReportCardController::class,'show'])->name(RouteNames::HR_REPORT_CARDS_SHOW);
+    Route::post('/report_cards/{id}', [\App\Http\Controllers\Web\Hr\ReportCardController::class,'update'])->name(RouteNames::HR_REPORT_CARDS_UPDATE);
+
 });
 
 /**
@@ -73,4 +77,13 @@ Route::prefix('time-keeper')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, Midd
  */
 Route::prefix('accounting')->middleware([MiddlewareNames::AUTH_MIDDLEWARE, MiddlewareNames::ACCOUNTING_MIDDLEWARE])->group(function () {
     Route::get('/accounting', [AccountingController::class, 'dashboard'])->name(RouteNames::ACCOUNTING_DASHBOARD);
+    Route::get('/report_cards', [\App\Http\Controllers\Web\Accounting\ReportCartController::class,'index'])->name(RouteNames::A_REPORT_CARDS_INDEX);
+    Route::get('/report_cards/{id}', [\App\Http\Controllers\Web\Accounting\ReportCartController::class,'show'])->name(RouteNames::A_REPORT_CARDS_SHOW);
+    Route::post('/report_cards/{id}', [\App\Http\Controllers\Web\Accounting\ReportCartController::class,'update'])->name(RouteNames::A_REPORT_CARDS_UPDATE);
+
 });
+
+
+Route::get('/save-report/{id}',[\App\Http\Controllers\Web\Accounting\ReportCartController::class,'savePdf'])
+    ->middleware('auth')
+    ->name('save_pdf');
