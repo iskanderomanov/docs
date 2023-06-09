@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Web\TimeKeeper;
 
+use App\Http\Enums\StatusTypes;
+use App\Http\Responses\ResponseBuilder;
+use App\Models\ReportCard;
 use App\Services\ReportCard\Interfaces\ReportCardServiceInterface;
+use App\Utils\RouteNames;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReportCardController extends TimeKeeperBaseController
 {
@@ -40,9 +46,19 @@ class ReportCardController extends TimeKeeperBaseController
         return view(self::PATH_VIEW . self::VIEW . self::CREATE_VIEW, $response->getResult());
     }
 
-    public function store()
+    public function store(Request $request)
     {
+        $data = [
+            'user_id' => Auth::user()->id,
+            'name' => "Отчет за " . now()->toDateString(),
+            'data' => json_encode($request->all()),
+            'status' => StatusTypes::AWAITING_VERIFICATION_HR->value,
+            'description_answer' => ''
+        ];
 
+        ReportCard::create($data);
+
+        return ResponseBuilder::jsonRedirect(route(RouteNames::REPORT_CARDS_INDEX));
     }
 
     /**
@@ -51,12 +67,19 @@ class ReportCardController extends TimeKeeperBaseController
      */
     public function edit(int $id): Factory|View|Application
     {
-        $response = $this->reportCardService->edit($id);
-        return view(self::PATH_VIEW . self::VIEW . self::EDIT_VIEW, $response->getResult());
+        $reportCard = ReportCard::find($id);
+
+        return view(self::PATH_VIEW . self::VIEW . self::EDIT_VIEW, ['reportCard' => $reportCard]);
     }
 
-    public function update()
+    public function update(Request  $request,int $id)
     {
+        $model = ReportCard::where('id',$id)->first();
+        $model->data = json_encode($request->all());
+        $model->status = $model->status === StatusTypes::ERROR_FROM_ACCOUNTING->value ? StatusTypes::AWAITING_VERIFICATION_ACCOUNTING : StatusTypes::AWAITING_VERIFICATION_HR;
+
+        $model->save();
+        return ResponseBuilder::jsonRedirect(route(RouteNames::REPORT_CARDS_INDEX));
 
     }
 }

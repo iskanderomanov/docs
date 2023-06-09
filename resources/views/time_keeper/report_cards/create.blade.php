@@ -31,7 +31,7 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
 
             <div class="col-lg-12 mb-3">
                 <form
-                    action="{{ route(RouteNames::REPORT_CARDS_CREATE) }}"
+                    action="{{ route(RouteNames::REPORT_CARDS_STORE) }}"
                     method="post" class="ajax">
                     <div class="card-body">
                         <div class="mb-3">
@@ -43,11 +43,14 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
     vertical-align: middle">ID
                                         </th>
                                         <th rowspan="2" style="display: table-cell;
-    vertical-align: middle">ФИО</th>
+    vertical-align: middle">ФИО
+                                        </th>
                                         <th rowspan="2" style="display: table-cell;
-    vertical-align: middle">Должность</th>
+    vertical-align: middle">Должность
+                                        </th>
                                         <th rowspan="2" style="display: table-cell;
-    vertical-align: middle">яв к</th>
+    vertical-align: middle">яв к
+                                        </th>
                                         <th colspan="{{$daysInLastMonth}}" class="text-center">Дни</th>
                                         <th rowspan="2" style="display: table-cell;
     vertical-align: middle">Рабочие дни
@@ -69,22 +72,26 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
                                             <td>
                                                 {{$regularWorker->rates[0]->rate}}
                                             </td>
+                                                <?php $col = 0; ?>
                                             @foreach(range(1,$daysInLastMonth) as $day)
-                                                <td><input style="width: 25px" type="int" value="{{6}}"
-                                                           name='regularWorkers[{{$regularWorker->id}}][{{$day}}]'/>
-                                                </td>
-                                            @endforeach
-                                            <td>23</td>
 
+                                                <td><input style="width: 25px" type="text"
+                                                           value="{{isWeekend($lastMonth->copy()->startOfMonth()->addDays($day-1)) ? 'В' : 6 }}"
+                                                           name='regularWorkers[{{$regularWorker->id}}][days][{{$day}}]'/>
+                                                </td>
+
+                                                    <?php if (!isWeekend($lastMonth->copy()->startOfMonth()->addDays($day - 1))) {
+                                                    $col++;} ?>
+                                            @endforeach
+                                            <td>{{$col}}</td>
+                                            <input type="hidden" name="regularWorkers[{{$regularWorker->id}}][user][rate]" value="{{$regularWorker->rates[0]->rate}}">
+                                            <input type="hidden" name="regularWorkers[{{$regularWorker->id}}][user][workDays]"
+                                                   value="{{$col}}">
                                             <input type="hidden" class="form-control"
-                                                   name="regularWorkers[{{$loop->iteration}}]['name']"
-                                                   value="{{$regularWorker->name}}">
-                                            <input type="hidden" class="form-control"
-                                                   name="regularWorkers[{{$loop->iteration}}]['name']"
+                                                   name="regularWorkers[{{$regularWorker->id}}][user][position]"
                                                    value="{{$regularWorker->position?->name}}">
-                                            <input type="hidden" class="form-control" name="name" id="name"
-                                                   value="{{$position->name ?? ''}}"
-                                            >
+                                            <input type="hidden" class="form-control" name="regularWorkers[{{$regularWorker->id}}][user][name]" id="name"
+                                                   value="{{$regularWorker->name ?? ''}}">
                                         </tr>
                                     @endforeach
                                     <th colspan="{{$daysInLastMonth + 5}}" class="text-center">Кошумча ставка</th>
@@ -97,19 +104,30 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
                                                 <td>
                                                     {{$regularWorker->rates[0]->rate}}
                                                 </td>
+                                                    <?php $col = 0; ?>
+                                                    <?php $hourRate = 6 * $regularWorker->rates[0]->rate ?>
+
                                                 @foreach(range(1,$daysInLastMonth) as $day)
-                                                    <td><input style="width: 25px" type="int" value="{{6}}"
-                                                               name='additionalWorker[{{$regularWorker->id}}][{{$day}}]'/>
+
+                                                    <td><input style="width: 25px" type="text"
+                                                               value="{{isWeekend($lastMonth->copy()->startOfMonth()->addDays($day-1)) ? 'В' : $hourRate }}"
+                                                               name='additionalWorker[{{$regularWorker->id}}][days][{{$day}}]'/>
                                                     </td>
+                                                        <?php if (!isWeekend($lastMonth->copy()->startOfMonth()->addDays($day - 1))) {
+                                                        $col++;} ?>
                                                 @endforeach
-                                                <td>23</td>
+
+                                                <td>{{$col}}</td>
+                                                <input type="hidden" name="additionalWorker[{{$regularWorker->id}}][user][workDays]"
+                                                       value="{{$col}}">
+                                                <input type="hidden" name="additionalWorker[{{$regularWorker->id}}][user][rate]" value="{{$regularWorker->rates[0]->rate}}">
 
                                                 <input type="hidden" class="form-control"
-                                                       name="additionalWorker[{{$loop->iteration}}]['name']"
-                                                       value="{{$regularWorker->name}}">
-                                                <input type="hidden" class="form-control"
-                                                       name="additionalWorker[{{$loop->iteration}}]['name']"
+                                                       name="additionalWorker[{{$regularWorker->id}}][user][position]"
                                                        value="{{$regularWorker->position?->name}}">
+                                                <input type="hidden" class="form-control" name="additionalWorker[{{$regularWorker->id}}][user][name]" id="name"
+                                                       value="{{$regularWorker->name ?? ''}}">
+
                                             </tr>
                                         @endif
                                     @endforeach
@@ -123,24 +141,34 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
                                             <td>
                                                 {{$regularWorker->rates[0]->rate}}
                                             </td>
+                                                <?php $col = 0; ?>
+                                                <?php $hourRate = 6 * $regularWorker->rates[0]->rate ?>
                                             @foreach(range(1,$daysInLastMonth) as $day)
-                                                <td><input style="width: 25px" type="int" value="{{6}}"
-                                                           name='hiredWorkers[{{$regularWorker->id}}][{{$day}}]'/></td>
-                                            @endforeach
-                                            <td>23</td>
 
+                                                <td><input style="width: 25px" type="text"
+                                                           value="{{isWeekend($lastMonth->copy()->startOfMonth()->addDays($day-1)) ? 'В' : $hourRate }}"
+                                                           name='hiredWorkers[{{$regularWorker->id}}][days][{{$day}}]'/>
+                                                </td>
+                                                    <?php if (!isWeekend($lastMonth->copy()->startOfMonth()->addDays($day - 1))) {
+                                                    $col++;} ?>
+                                            @endforeach
+                                            <td>{{$col}}</td>
+                                            <input type="hidden" name="hiredWorkers[{{$regularWorker->id}}][user][workDays]"
+                                                   value="{{$col}}">
                                             <input type="hidden" class="form-control"
-                                                   name="hiredWorkers[{{$loop->iteration}}]['name']"
-                                                   value="{{$regularWorker->name}}">
-                                            <input type="hidden" class="form-control"
-                                                   name="hiredWorkers[{{$loop->iteration}}]['name']"
+                                                   name="hiredWorkers[{{$regularWorker->id}}][user][position]"
                                                    value="{{$regularWorker->position?->name}}">
+                                            <input type="hidden" class="form-control" name="hiredWorkers[{{$regularWorker->id}}][user][name]" id="name"
+                                                   value="{{$regularWorker->name ?? ''}}">
+                                            <input type="hidden" name="hiredWorkers[{{$regularWorker->id}}][user][rate]" value="{{$regularWorker->rates[0]->rate}}">
+
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
                             </div>
                             <div class="invalid-feedback" id="error"></div>
+                            <input type="hidden" name="days" value="{{$daysInLastMonth}}">
                             <button class="btn btn-success" type="submit">Сохранить</button>
                         </div>
                     </div>
@@ -151,5 +179,14 @@ $dayOfWeek = $lastMonth->startOfMonth()->format('l');
     <!-- Content here -->
 @endsection
 <?php
-#todo Написать функцию окторая будет определять выходной сегодня или нет
+function isWeekend($date)
+{
+    return $date->isWeekend();
+}
 ?>
+
+
+@push('scripts')
+
+@endpush
+
