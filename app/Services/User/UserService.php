@@ -59,7 +59,7 @@ class UserService extends Service implements UserServiceInterface
         }
         $user = User::create($dto);
 
-        if (isset($dto->rate['additional'])) {
+        if (isset($dto->rate['additional']) && isset($dto->rate['hired'])) {
             User::createRates($dto->rate, $user->id);
         }
         return $this->createResponse($user);
@@ -86,8 +86,21 @@ class UserService extends Service implements UserServiceInterface
 
     public function update(BaseUpdateUserDto $dto): ServiceResponse
     {
-        User::updatePosition($dto);
-        return $this->createResponse(true);
+        $user = $this->repository->getByEmail(new GetUserDto($dto->toArray()));
+        if (is_null($user)) {
+            return $this->createResponse(false);
+        }
+
+        if ($dto->is_time_keeper && $this->repository->getTimeKeeperByDepartmentId($dto->department_id)) {
+            $this->addError(new ServiceError('Уже существует табельщик в этой кафедре'));
+            return $this->createResponse();
+        }
+        $user = User::updateUser($dto);
+
+        if (isset($dto->rate['additional']) || isset($dto->rate['hired'])) {
+            User::updateRates($dto->rate, $dto->id);
+        }
+        return $this->createResponse($user);
     }
 
     public function getCreate(): ServiceResponse

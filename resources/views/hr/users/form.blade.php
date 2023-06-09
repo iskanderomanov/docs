@@ -34,7 +34,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Пароль *</label>
-                            <input type="password" class="form-control" name="password" id="password" value="********"
+                            <input type="password" class="form-control" name="password" id="password" value=""
                                    placeholder="Пример: 12345678">
                             <div class="invalid-feedback"></div>
                         </div>
