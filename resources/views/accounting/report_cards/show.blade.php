@@ -25,11 +25,10 @@ $data = json_decode($reportCard->data, 1);
                         </a>
                     </li>
                 </ul>
-                <button onclick="window.print();"
-                        class="btn btn-sm btn-secondary d-flex align-items-center">
+                <button onclick="printTable()" id="print-table-button" class="btn btn-sm btn-secondary d-flex align-items-center">
                     <i class="cil-print mr-1"></i>
-                    Скачать в ПДФ
-                 </button>
+                    Печать
+                </button>
                 <h3 class="card-title"> Просмотр табеля</h3>
             </div>
 
@@ -40,7 +39,7 @@ $data = json_decode($reportCard->data, 1);
                     <div class="card-body">
                         <div class="mb-3">
                             <div class="table-responsive">
-                                <table class="table table-bordered">
+                                <table id="table" class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th rowspan="2" class="align-items-center center" style="display: table-cell;
@@ -68,11 +67,11 @@ $data = json_decode($reportCard->data, 1);
                                     </thead>
                                     <tbody>
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Штатта иштегендер</th>
-                                    @foreach($data['regularWorkers'] as $regularWorker)
+                                    @foreach($data['regularWorkers'] ?? [] as $regularWorker)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$regularWorker['user']['name']}}</td>
-                                            <td>{{$regularWorker['user']['position']}}</td>
+                                            <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                                            <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                             <td>
                                                 {{$regularWorker['user']['rate']}}
                                             </td>
@@ -85,11 +84,11 @@ $data = json_decode($reportCard->data, 1);
                                         </tr>
                                     @endforeach
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Кошумча ставка</th>
-                                    @foreach($data['additionalWorker'] as $regularWorker)
+                                    @foreach($data['additionalWorker'] ?? [] as $regularWorker)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
-                                                <td>{{$regularWorker['user']['name']}}</td>
-                                                <td>{{$regularWorker['user']['position']}}</td>
+                                                <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                                                <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                                 <td>
                                                     {{$regularWorker['user']['rate']}}
                                                 </td>
@@ -102,15 +101,15 @@ $data = json_decode($reportCard->data, 1);
                                     @endforeach
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Айкалыштырып иштегендер
                                     </th>
-                                    @foreach($data['hiredWorkers'] as $regularWorker)
+                                    @foreach($data['hiredWorkers'] ?? [] as $regularWorker)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$regularWorker['user']['name']}}</td>
-                                            <td>{{$regularWorker['user']['position']}}</td>
+                                            <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                                            <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                             <td>
                                                 {{$regularWorker['user']['rate']}}
                                             </td>
-                                            @foreach($regularWorker['days'] as $day)
+                                            @foreach($regularWorker['days'] ?? [] as $day)
 
                                                 <td>{{$day}}
                                                 </td>
@@ -148,6 +147,16 @@ function isWeekend($date)
 
 
 @push('scripts')
+    <script>
+        function printTable() {
+            var printContents = document.getElementById('table').outerHTML;
+            var originalContents = document.body.innerHTML;
 
+            document.body.innerHTML = printContents;
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 @endpush
 

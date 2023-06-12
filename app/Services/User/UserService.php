@@ -86,10 +86,6 @@ class UserService extends Service implements UserServiceInterface
 
     public function update(BaseUpdateUserDto $dto): ServiceResponse
     {
-        $user = $this->repository->getByEmail(new GetUserDto($dto->toArray()));
-        if (is_null($user)) {
-            return $this->createResponse(false);
-        }
 
         if ($dto->is_time_keeper && $this->repository->getTimeKeeperByDepartmentId($dto->department_id)) {
             $this->addError(new ServiceError('Уже существует табельщик в этой кафедре'));

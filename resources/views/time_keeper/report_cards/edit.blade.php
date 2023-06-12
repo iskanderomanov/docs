@@ -57,25 +57,25 @@ $data = json_decode($reportCard->data, 1);
                                         </th>
                                     </tr>
                                     <tr>
-                                        @foreach(range(1,$data['days']) as $day)
+                                        @foreach(range(1,$data['days']) ?? [] as $day)
                                             <th>{{$day}}</th>
                                         @endforeach
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Штатта иштегендер</th>
-                                    @foreach($data['regularWorkers'] as $id => $regularWorker)
+                                    @foreach($data['regularWorkers'] ?? [] as $id => $regularWorker)
                                         <tr>
                                             <td>
                                                {{$loop->iteration}}
                                             </td>
                                             <td>
-                                                {{$regularWorker['user']['name']}}</td>
-                                            <td>{{$regularWorker['user']['position']}}</td>
+                                                {{shortenName($regularWorker['user']['name'])}}</td>
+                                            <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                             <td>
                                                 {{$regularWorker['user']['rate']}}
                                             </td>
-                                            @foreach($regularWorker['days'] as $key => $day)
+                                            @foreach($regularWorker['days'] ?? [] as $key => $day)
                                                 <td>
                                                     <input style="width: 25px" type="text"
                                                            value="{{$day}}"
@@ -88,19 +88,19 @@ $data = json_decode($reportCard->data, 1);
                                                    value="{{$regularWorker['user']['workDays']}}">
                                             <input type="hidden" class="form-control"
                                                    name="regularWorkers[{{$id}}][user][position]"
-                                                   value="{{$regularWorker['user']['position']}}">
+                                                   value="{{shortenName($regularWorker['user']['position'])}}">
                                             <input type="hidden" class="form-control" name="regularWorkers[{{$id}}][user][name]" id="name"
-                                                   value="{{$regularWorker['user']['name']}}">
+                                                   value="{{shortenName($regularWorker['user']['name'])}}">
                                             <input type="hidden" name="regularWorkers[{{$id}}][user][rate]" value="{{$regularWorker['user']['rate']}}">
 
                                         </tr>
                                     @endforeach
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Кошумча ставка</th>
-                                    @foreach($data['additionalWorker'] as $id => $regularWorker)
+                                    @foreach($data['additionalWorker'] ?? [] as $id => $regularWorker)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$regularWorker['user']['name']}}</td>
-                                            <td>{{$regularWorker['user']['position']}}</td>
+                                            <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                                            <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                             <td>
                                                 {{$regularWorker['user']['rate']}}
                                             </td>
@@ -116,20 +116,20 @@ $data = json_decode($reportCard->data, 1);
                                                    value="{{$regularWorker['user']['workDays']}}">
                                             <input type="hidden" class="form-control"
                                                    name="additionalWorker[{{$id}}][user][position]"
-                                                   value="{{$regularWorker['user']['position']}}">
+                                                   value="{{shortenName($regularWorker['user']['position'])}}">
                                             <input type="hidden" class="form-control" name="additionalWorker[{{$id}}][user][name]" id="name"
-                                                   value="{{$regularWorker['user']['name']}}">
+                                                   value="{{shortenName($regularWorker['user']['name'])}}">
                                             <input type="hidden" name="additionalWorker[{{$id}}][user][rate]" value="{{$regularWorker['user']['rate']}}">
 
                                         </tr>
                                     @endforeach
                                     <th colspan="{{$data['days'] + 5}}" class="text-center">Айкалыштырып иштегендер
                                     </th>
-                                    @foreach($data['hiredWorkers'] as $id => $regularWorker)
+                                    @foreach($data['hiredWorkers'] ?? [] as $id => $regularWorker)
                                         <tr>
                                             <td>{{$loop->iteration}}</td>
-                                            <td>{{$regularWorker['user']['name']}}</td>
-                                            <td>{{$regularWorker['user']['position']}}</td>
+                                            <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                                            <td>{{shortenName($regularWorker['user']['position'])}}</td>
                                             <td>
                                                 {{$regularWorker['user']['rate']}}
                                             </td>
@@ -145,9 +145,9 @@ $data = json_decode($reportCard->data, 1);
                                                    value="{{$regularWorker['user']['workDays']}}">
                                             <input type="hidden" class="form-control"
                                                    name="hiredWorkers[{{$id}}][user][position]"
-                                                   value="{{$regularWorker['user']['position']}}">
+                                                   value="{{shortenName($regularWorker['user']['position'])}}">
                                             <input type="hidden" class="form-control" name="hiredWorkers[{{$id}}][user][name]" id="name"
-                                                   value="{{$regularWorker['user']['name']}}">
+                                                   value="{{shortenName($regularWorker['user']['name'])}}">
                                             <input type="hidden" name="hiredWorkers[{{$id}}][user][rate]" value="{{$regularWorker['user']['rate']}}">
 
                                         </tr>
