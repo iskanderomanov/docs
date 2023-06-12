@@ -56,8 +56,8 @@ $data = json_decode($reportCard->data, 1);
             @foreach($data['regularWorkers'] as $regularWorker)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$regularWorker['user']['name']}}</td>
-                    <td>{{$regularWorker['user']['position']}}</td>
+                    <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                    <td>{{shortenName($regularWorker['user']['position'])}}</td>
                     <td>
                         {{$regularWorker['user']['rate']}}
                     </td>
@@ -73,8 +73,8 @@ $data = json_decode($reportCard->data, 1);
             @foreach($data['additionalWorker'] as $regularWorker)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$regularWorker['user']['name']}}</td>
-                    <td>{{$regularWorker['user']['position']}}</td>
+                    <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                    <td>{{shortenName($regularWorker['user']['position'])}}</td>
                     <td>
                         {{$regularWorker['user']['rate']}}
                     </td>
@@ -90,8 +90,8 @@ $data = json_decode($reportCard->data, 1);
             @foreach($data['hiredWorkers'] as $regularWorker)
                 <tr>
                     <td>{{$loop->iteration}}</td>
-                    <td>{{$regularWorker['user']['name']}}</td>
-                    <td>{{$regularWorker['user']['position']}}</td>
+                    <td>{{shortenName($regularWorker['user']['name'])}}</td>
+                    <td>{{shortenName($regularWorker['user']['position'])}}</td>
                     <td>
                         {{$regularWorker['user']['rate']}}
                     </td>

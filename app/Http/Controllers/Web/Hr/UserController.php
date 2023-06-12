@@ -58,12 +58,17 @@ class UserController extends HrBaseController
     public function create(): Factory|View|Application
     {
         $position = $this->userService->getCreate();
+
         return view(self::PATH_VIEW . self::USER_VIEW . self::FORM_VIEW, $position->getResult());
     }
 
     public function update(int $id,UpdateUserRequest $request)
     {
-        $this->userService->update(new UpdateUserDto(['id' => $id, ...$request->toArray()]));
+        $response = $this->userService->update(new UpdateUserDto(['id' => $id, ...$request->toArray()]));
+
+        if($response->isFailed()){
+            return ResponseBuilder::jsonAlertError('Ошибка', $response->getServiceErrors()[0]->getMessage(), 409);
+        }
         return ResponseBuilder::jsonRedirect(route(RouteNames::USER_INDEX));
     }
 
@@ -76,7 +81,11 @@ class UserController extends HrBaseController
 
     public function store(CreateUserRequest $request): JsonResponse
     {
-        $this->userService->store(new CreateUserDto($request->toArray()));
+        $response = $this->userService->store(new CreateUserDto($request->toArray()));
+
+        if($response->isFailed()){
+            return ResponseBuilder::jsonAlertError('Ошибка', $response->getServiceErrors()[0]->getMessage(), 409);
+        }
         return ResponseBuilder::jsonRedirect(route(RouteNames::USER_INDEX));
     }
 }

@@ -25,7 +25,7 @@ class UpdateUserRequest extends BaseUserRequest
     {
         return [
             self::NAME => 'string|required',
-            self::PASSWORD => 'string|required',
+            self::PASSWORD => '',
             self::EMAIL => 'email|required',
             self::USER_TYPE_ID => 'required|integer',
             self::POSITION_ID => 'nullable|integer',

@@ -1,0 +1,19 @@
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    #table, #table * {
+        visibility: visible;
+    }
+    #table {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+    #table {
+        font-size: 10px;
+        font-weight: bold;
+        color: #000000;
+        width: 100%;
+    }
+}

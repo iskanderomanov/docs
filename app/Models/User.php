@@ -95,7 +95,6 @@ class User extends Authenticatable
     protected $fillable = [
         self::NAME_COLUMN,
         self::EMAIL_COLUMN,
-        self::PASSWORD_COLUMN,
         self::USER_TYPE_COLUMN,
         self::IS_TIME_KEEPER_COLUMN,
         self::POSITION_ID_COLUMN,
@@ -180,6 +179,15 @@ class User extends Authenticatable
      */
     public static function updateUser(BaseUpdateUserDto $dto): int
     {
+        if ($dto->password !== null) {
+            // Хешируем новый пароль
+            $hashedPassword = Hash::make($dto->password);
+            dd($hashedPassword, Hash::check($dto->password, $hashedPassword));
+            // Обновляем пароль пользователя
+            $dto->password = $hashedPassword;
+        }else{
+            unset($dto->password);
+        }
         return User::whereId($dto->id)->update($dto->toArrayExcept('rate'));
     }
 

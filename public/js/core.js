@@ -106,6 +106,7 @@ function ajaxRequest(url, method = 'get', formData = null, form = null, returnRe
                     case 403:
                     case 400:
                     case 401:
+                    case 409:
                         if (error.response.data.functions) {
                             run(error.response.data.functions);
                         }

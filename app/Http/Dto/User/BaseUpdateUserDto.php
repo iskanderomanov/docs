@@ -6,7 +6,7 @@ abstract class BaseUpdateUserDto extends BaseUserDto
 {
     public string $name;
     public string $email;
-    public string $password;
+    public ?string $password;
     public int $user_type;
     public ?int $position_id;
     public ?int $department_id;
