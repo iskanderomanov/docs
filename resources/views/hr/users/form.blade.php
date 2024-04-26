@@ -122,7 +122,7 @@
     isset($user) ?
     $user->rates->where('rate_type', RateTypes::getRateId(RateTypes::MAIN->value))->first('value')->rate ?? ''
     : ''
-                                    }}" placeholder="Пример: 1.0" required>
+                                    }}" placeholder="Пример: 1.0" novalidate>
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="invalid-feedback " id="error"></div>
@@ -148,7 +148,7 @@
     isset($user) ?
     $user->rates->where('rate_type', RateTypes::getRateId(RateTypes::HIRED->value))->first('value')->rate ?? ''
     : ''
-                                    }}" placeholder="Пример: 0.75" required>
+                                    }}" placeholder="Пример: 0.75" novalidate>
                             <div class="invalid-feedback"></div>
                         </div>
                         <div class="invalid-feedback" id="error"></div>

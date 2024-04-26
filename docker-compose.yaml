@@ -3,6 +3,7 @@ version: '3'
 services:
   #BACKEND
   php:
+    container_name: php-docs-container
     build:
       context: .
       dockerfile: docker/php/Dockerfile
@@ -12,6 +13,7 @@ services:
     depends_on:
       - db
   nginx:
+    container_name: nginx-docs-container
     image: nginx:latest
     ports:
       - "8081:80"
@@ -22,6 +24,7 @@ services:
       - php
   #DATABASE
   db:
+    container_name: db-docs-container
     image: postgres:latest
     environment:
       POSTGRES_USER: ${DB_USERNAME:-postgres}
